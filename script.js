@@ -71,6 +71,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return keyCombo;
     };
 
+    // Function to handle mouse buttons and modifiers
+    const getMouseButton = (event) => {
+        let mouseButton = '';
+        if (event.button === 1) mouseButton = 'M3';  // Middle Mouse Button
+        if (event.button === 3) mouseButton = 'M5';  // Mouse 5 (typically back button)
+        if (event.button === 2) mouseButton = 'M4';  // Mouse 4 (typically forward button)
+
+        // Format the mouse button with modifiers
+        return formatKeyCombo(mouseButton, event);
+    };
+
     // Add event listeners to each button for mouseover
     document.querySelectorAll('.keybind').forEach(button => {
         const handleKeydown = (event) => {
@@ -137,6 +148,32 @@ document.addEventListener('DOMContentLoaded', () => {
             button.classList.remove('active');
             window.removeEventListener('keydown', handleKeydown);  // Remove event listeners when mouse leaves
             window.removeEventListener('mousedown', handleKeydown);
+        });
+
+        // Handle mouse wheel event for MWU (mouse wheel up) and MWD (mouse wheel down)
+        button.addEventListener('wheel', function(event) {
+            // If the button is locked, do nothing
+            if (button.classList.contains('locked')) {
+                return;
+            }
+
+            event.preventDefault();  // Prevent default scrolling behavior
+
+            let keyCombo = '';
+            if (event.deltaY < 0) {
+                keyCombo = 'MWU';  // Mouse wheel up
+            } else if (event.deltaY > 0) {
+                keyCombo = 'MWD';  // Mouse wheel down
+            }
+
+            // Remove any previous bindings with this key combination
+            removeDuplicateKeybinds(keyCombo, button.id);
+
+            // Set the keybind for this button
+            button.textContent = keyCombo;
+
+            // Save keybind to localStorage
+            localStorage.setItem(button.id, keyCombo);
         });
 
         // Handle right-click to lock/unlock the button
