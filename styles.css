@@ -96,3 +96,12 @@ body {
     transform: translateY(2px); /* Move the button down by 2px */
 }
 
+/* CSS Animation for the blink effect */
+@keyframes blink {
+    0%, 100% { background-color: #FFECA1; }  /* Yellow at start and end */
+    50% { background-color: #333; }         /* Default background color */
+}
+
+.blink {
+    animation: blink 0.5s step-start 4; /* Blink effect for 2 seconds (0.5s x 4 blinks) */
+}

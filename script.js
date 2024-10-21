@@ -13,12 +13,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to remove duplicate keybinds from other buttons
     const removeDuplicateKeybinds = (newKey, currentButtonId) => {
+        let foundLocked = false;
         document.querySelectorAll('.keybind').forEach(button => {
             if (button.id !== currentButtonId && button.textContent === newKey) {
-                button.textContent = '';  // Clear the duplicate keybind
-                localStorage.removeItem(button.id);  // Remove from localStorage
+                // Check if the button is locked
+                if (button.classList.contains('locked')) {
+                    foundLocked = true;
+                    blinkLockedButton(button); // Blink the locked button
+                } else {
+                    button.textContent = '';  // Clear the duplicate keybind
+                    localStorage.removeItem(button.id);  // Remove from localStorage
+                }
             }
         });
+        return foundLocked;
+    };
+
+    // Function to make the locked button blink for 2 seconds
+    const blinkLockedButton = (button) => {
+        button.classList.add('blink');  // Add the blinking class
+        setTimeout(() => {
+            button.classList.remove('blink');  // Remove the blinking class after 2 seconds
+        }, 2000);  // Blink for 2 seconds
     };
 
     // Function to format key combinations, including mouse buttons with modifiers
@@ -55,17 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return keyCombo;
     };
 
-    // Function to handle mouse buttons and modifiers
-    const getMouseButton = (event) => {
-        let mouseButton = '';
-        if (event.button === 1) mouseButton = 'M3';  // Middle Mouse Button
-        if (event.button === 3) mouseButton = 'M4';  // Swapped: Mouse 5 is now M4
-        if (event.button === 2) return '';           // Ignore Mouse 2 (right-click) for keybinds
-
-        // Format the mouse button with modifiers
-        return formatKeyCombo(mouseButton, event);
-    };
-
     // Add event listeners to each button for mouseover
     document.querySelectorAll('.keybind').forEach(button => {
         const handleKeydown = (event) => {
@@ -100,8 +105,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 keyCombo = formatKeyCombo(key, event);
             }
 
-            // Remove any previous bindings with this key combination (only one other button)
-            removeDuplicateKeybinds(keyCombo, button.id);
+            // Check if this key is locked elsewhere
+            const foundLocked = removeDuplicateKeybinds(keyCombo, button.id);
+
+            if (foundLocked) {
+                // Do nothing if a locked key was found
+                return;
+            }
 
             // Set the keybind for this button
             button.textContent = keyCombo;
@@ -127,32 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
             button.classList.remove('active');
             window.removeEventListener('keydown', handleKeydown);  // Remove event listeners when mouse leaves
             window.removeEventListener('mousedown', handleKeydown);
-        });
-
-        // Handle mouse wheel event for MWU (mouse wheel up) and MWD (mouse wheel down)
-        button.addEventListener('wheel', function(event) {
-            // If the button is locked, do nothing
-            if (button.classList.contains('locked')) {
-                return;
-            }
-
-            event.preventDefault();  // Prevent default scrolling behavior
-
-            let keyCombo = '';
-            if (event.deltaY < 0) {
-                keyCombo = 'MWU';  // Mouse wheel up
-            } else if (event.deltaY > 0) {
-                keyCombo = 'MWD';  // Mouse wheel down
-            }
-
-            // Remove any previous bindings with this key combination
-            removeDuplicateKeybinds(keyCombo, button.id);
-
-            // Set the keybind for this button
-            button.textContent = keyCombo;
-
-            // Save keybind to localStorage
-            localStorage.setItem(button.id, keyCombo);
         });
 
         // Handle right-click to lock/unlock the button
