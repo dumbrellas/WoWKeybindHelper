@@ -1,0 +1,98 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1b1b1b;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    align-items: center;     /* Center content horizontally */
+    height: 100vh;
+    margin: 0;
+    position: relative; /* To allow static positioning of help box */
+}
+
+.help-box {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #2a2a2a;
+    padding: 10px;
+    border-radius: 5px;
+    color: #ffffff;
+    font-size: 12px;
+    line-height: 1.5;
+    width: auto;
+}
+
+.highlight {
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: #4CE4CF; /* Choose your preferred shade of blue */
+}
+
+.page-title {
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 20px; /* Adds space between the title and button grid */
+}
+
+.keybind-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 50px); /* 12 buttons per row */
+    grid-template-rows: repeat(4, 50px);     /* 4 rows */
+    grid-gap: 5px;
+}
+
+.keybind {
+    width: 50px;
+    height: 50px;
+    background-color: #333;
+    border: 1px solid #666;
+    color: white;
+    text-align: center;
+    font-size: 18px; /* Increased font size to 18px */
+    line-height: 50px;
+    cursor: pointer;
+    text-shadow: 2px 2px 3px black; /* Added black shadow to make it look raised */
+}
+
+.keybind:focus {
+    outline: 2px solid #00aaff;
+}
+
+.keybind.active {
+    border: 2px solid #4CE4CF; /* Blue border when hovered */
+}
+
+.keybind.locked {
+    border: 2px solid red; /* Red border to indicate the button is locked */
+}
+
+/* Clear All Button Styles */
+.clear-all-btn {
+    margin-top: 20px;  /* Add spacing below the keybind grid */
+    padding: 12px 24px;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    text-shadow: 2px 2px 3px black;
+    background-color: #444;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;  /* Added transform transition */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Box shadow for modern look */
+}
+
+.clear-all-btn:hover {
+    background-color: #555; /* Slightly lighter background on hover */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.7); /* Enhance shadow on hover */
+}
+
+.clear-all-btn:active {
+    background-color: #666; /* Change background on click */
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3); /* Smaller shadow to simulate depression */
+    transform: translateY(2px); /* Move the button down by 2px */
+}
+
