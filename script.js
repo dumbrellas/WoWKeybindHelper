@@ -75,8 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const getMouseButton = (event) => {
         let mouseButton = '';
         if (event.button === 1) mouseButton = 'M3';  // Middle Mouse Button
+        if (event.button === 2) return '';           // Ignore Mouse 2 (right-click) for keybinds
         if (event.button === 3) mouseButton = 'M5';  // Mouse 5 (typically back button)
-        if (event.button === 2) mouseButton = 'M4';  // Mouse 4 (typically forward button)
 
         // Format the mouse button with modifiers
         return formatKeyCombo(mouseButton, event);
