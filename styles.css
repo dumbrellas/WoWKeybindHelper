@@ -24,10 +24,16 @@ body {
     width: 250px;
 }
 
-.highlight {
+.highlight-blue {
     font-family:Arial, Helvetica, sans-serif;
     font-weight: bold;
     color: #4CE4CF; /* Choose your preferred shade of blue */
+}
+
+.highlight-red {
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: #E64C4C; /* Choose your preferred shade of blue */
 }
 
 .page-title {
